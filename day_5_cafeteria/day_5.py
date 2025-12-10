@@ -25,9 +25,20 @@ def find_fresh_ingredients(fresh_ranges, ingredients):
                 break # if the ingredient at hand is in at least one range, no need to look further
     return(fresh_ingredients)
 
+def find_fresh_ingredient_ids(fresh_ranges):
+    fresh_ingredient_ids = set()
+    for start, end in fresh_ranges:
+        for i in range(start, end + 1):
+            yield(i)
+            #fresh_ingredient_ids.add(i)
+    #return fresh_ingredient_ids
+
 fresh_ranges, ingredients = read_ingredient_database()
 fresh_ingredients = find_fresh_ingredients(fresh_ranges, ingredients)
 print(len(fresh_ingredients))
+
+fresh_ingr_ids = set(find_fresh_ingredient_ids(fresh_ranges))
+print(len(fresh_ingr_ids))
 
 # Tests
 def test_read_ingredient_database():
@@ -41,3 +52,10 @@ def test_find_fresh_ingredients():
     assert len(fresh_ingredients) > 0, "function returns empty list"
     assert all(type(ingr) == int for ingr in fresh_ingredients), "fresh_ingredients should be a list of integers"
     assert all(ingr > 0 for ingr in fresh_ingredients), "ingredient id should be > 0"
+
+def test_find_fresh_ingredient_ids():
+    fresh_ids = find_fresh_ingredient_ids(fresh_ranges)
+    assert type(fresh_ids) == list, "fresh_ingredient_ids should be a list"
+    assert len(fresh_ids) > 0, "find_fresh_ingredient_ids returns an empty list"
+    assert all(type(ingr) == int for ingr in fresh_ids), "fresh_ingredient_ids should be a list of integers"
+    assert all(ingr > 0 for ingr in fresh_ids), "ingredient id should be > 0"
