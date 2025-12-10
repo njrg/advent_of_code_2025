@@ -25,20 +25,39 @@ def find_fresh_ingredients(fresh_ranges, ingredients):
                 break # if the ingredient at hand is in at least one range, no need to look further
     return(fresh_ingredients)
 
+def merge_ranges(fresh_ranges):
+    if not fresh_ranges:
+        return []
+    # Sort ranges by start value
+    fresh_ranges.sort()
+    merged_ranges = [fresh_ranges[0]]
+    for current_start, current_end in fresh_ranges[1:]:
+        last_start, last_end = merged_ranges[-1]
+        if current_start <= last_end + 1:
+            # If overlapping or adjacent: merge ranges
+            new_start = last_start
+            new_end = max(last_end, current_end)
+            merged_ranges[-1] = [new_start, new_end]
+        else:
+            merged_ranges.append((current_start, current_end))
+    return(merged_ranges)
+
 def find_fresh_ingredient_ids(fresh_ranges):
     fresh_ingredient_ids = set()
     for start, end in fresh_ranges:
         for i in range(start, end + 1):
-            yield(i)
-            #fresh_ingredient_ids.add(i)
-    #return fresh_ingredient_ids
+            fresh_ingredient_ids.add(i)
+    return fresh_ingredient_ids
+
 
 fresh_ranges, ingredients = read_ingredient_database()
 fresh_ingredients = find_fresh_ingredients(fresh_ranges, ingredients)
 print(len(fresh_ingredients))
 
-fresh_ingr_ids = set(find_fresh_ingredient_ids(fresh_ranges))
-print(len(fresh_ingr_ids))
+merged_ranges = merge_ranges(fresh_ranges)
+print(merged_ranges)
+#fresh_ingr_ids = find_fresh_ingredient_ids(merged_ranges)
+#print(len(fresh_ingr_ids))
 
 # Tests
 def test_read_ingredient_database():
@@ -53,9 +72,15 @@ def test_find_fresh_ingredients():
     assert all(type(ingr) == int for ingr in fresh_ingredients), "fresh_ingredients should be a list of integers"
     assert all(ingr > 0 for ingr in fresh_ingredients), "ingredient id should be > 0"
 
+def test_merge_ranges():
+    fresh_ranges, ingr = read_ingredient_database()
+    merged_ranges = merge_ranges(fresh_ranges)
+    assert type(merged_ranges) == list, "merged_ranges should be a list"
+    assert all(type(range) == list for range in merged_ranges), "merged_ranges should be a list of lists"
+
 def test_find_fresh_ingredient_ids():
     fresh_ids = find_fresh_ingredient_ids(fresh_ranges)
-    assert type(fresh_ids) == list, "fresh_ingredient_ids should be a list"
-    assert len(fresh_ids) > 0, "find_fresh_ingredient_ids returns an empty list"
-    assert all(type(ingr) == int for ingr in fresh_ids), "fresh_ingredient_ids should be a list of integers"
+    assert type(fresh_ids) == set, "fresh_ingredient_ids should be a list"
+    assert len(fresh_ids) > 0, "find_fresh_ingredient_ids returns an empty set"
+    assert all(type(ingr) == int for ingr in fresh_ids), "fresh_ingredient_ids should be a set of integers"
     assert all(ingr > 0 for ingr in fresh_ids), "ingredient id should be > 0"
