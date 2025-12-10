@@ -22,7 +22,7 @@ def find_fresh_ingredients(fresh_ranges, ingredients):
         for start, end in fresh_ranges:
             if ingr >= start and ingr <= end:
                 fresh_ingredients.append(ingr)
-                break # if the ingredient at hand is in at least one range, no need to look further
+                break # if the ingredient at hand is in at least one range, no need to look further, not necessary anymore with the merged ranges
     return(fresh_ingredients)
 
 def merge_ranges(fresh_ranges):
@@ -39,25 +39,33 @@ def merge_ranges(fresh_ranges):
             new_end = max(last_end, current_end)
             merged_ranges[-1] = [new_start, new_end]
         else:
-            merged_ranges.append((current_start, current_end))
+            merged_ranges.append([current_start, current_end])
     return(merged_ranges)
 
-def find_fresh_ingredient_ids(fresh_ranges):
-    fresh_ingredient_ids = set()
-    for start, end in fresh_ranges:
-        for i in range(start, end + 1):
-            fresh_ingredient_ids.add(i)
-    return fresh_ingredient_ids
+# This will run OOM
+#def find_fresh_ingredient_ids(id_ranges):
+#    fresh_ingredient_ids = set()
+#    for start, end in id_ranges:
+#        for i in range(start, end + 1):
+#            fresh_ingredient_ids.add(i)
+#    return fresh_ingredient_ids
+
+# "Cheat"-solution: just calculate the number of ids the ranges cover
+def count_ids_in_range(id_ranges):
+    number_of_ids = 0
+    for start, end in id_ranges:
+        range_size = end + 1 - start # end is included in range, thus `end + 1`
+        number_of_ids += range_size
+    return number_of_ids
 
 
 fresh_ranges, ingredients = read_ingredient_database()
-fresh_ingredients = find_fresh_ingredients(fresh_ranges, ingredients)
+merged_ranges = merge_ranges(fresh_ranges) # merge the ranges for efficiency
+fresh_ingredients = find_fresh_ingredients(merged_ranges, ingredients)
 print(len(fresh_ingredients))
 
-merged_ranges = merge_ranges(fresh_ranges)
-print(merged_ranges)
-#fresh_ingr_ids = find_fresh_ingredient_ids(merged_ranges)
-#print(len(fresh_ingr_ids))
+number_fresh_ids = count_ids_in_range(merged_ranges)
+print(number_fresh_ids)
 
 # Tests
 def test_read_ingredient_database():
@@ -78,9 +86,10 @@ def test_merge_ranges():
     assert type(merged_ranges) == list, "merged_ranges should be a list"
     assert all(type(range) == list for range in merged_ranges), "merged_ranges should be a list of lists"
 
-def test_find_fresh_ingredient_ids():
-    fresh_ids = find_fresh_ingredient_ids(fresh_ranges)
-    assert type(fresh_ids) == set, "fresh_ingredient_ids should be a list"
-    assert len(fresh_ids) > 0, "find_fresh_ingredient_ids returns an empty set"
-    assert all(type(ingr) == int for ingr in fresh_ids), "fresh_ingredient_ids should be a set of integers"
-    assert all(ingr > 0 for ingr in fresh_ids), "ingredient id should be > 0"
+# OOM-issue, so no test for that funciton either
+#def test_find_fresh_ingredient_ids():
+#    fresh_ids = find_fresh_ingredient_ids(fresh_ranges)
+#    assert type(fresh_ids) == set, "fresh_ingredient_ids should be a list"
+#    assert len(fresh_ids) > 0, "find_fresh_ingredient_ids returns an empty set"
+#    assert all(type(ingr) == int for ingr in fresh_ids), "fresh_ingredient_ids should be a set of integers"
+#    assert all(ingr > 0 for ingr in fresh_ids), "ingredient id should be > 0"
