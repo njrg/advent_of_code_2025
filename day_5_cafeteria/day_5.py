@@ -1,5 +1,5 @@
 def read_ingredient_database():
-    with open('input.tst', 'r', encoding='utf-8') as f:
+    with open('input', 'r', encoding='utf-8') as f:
         # read the input file, split the two datasets (list of ingredients and ranges
         # of fresh ingredients)
         ingredient_db = f.read().split('\n\n')
