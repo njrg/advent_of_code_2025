@@ -19,20 +19,32 @@ def solve_math_problems(math_probs):
     # We are calculating by column, so iterate over each column (number of columns is
     # read from the first row, i.e. first nested list.
     for col in range(len(math_probs[0])):
-        # Check which mathematical operation should be performed (last row of each
-        # column, either addition or multiplication)
-        if math_probs[-1][col] == '+':
-            solution=0 # for addition prime solution as 0
-            # Iterate over all rows except last (with the operator + or *)
-            for row in range(len(math_probs)-1):
-                solution=solution + int(math_probs[row][col])
-        else:
-            solution=1 # for multiplication, prime solution as 1
-            # Iterate over all rows except last (with the operator + or *)
-            for row in range(len(math_probs)-1):
-                solution=solution * int(math_probs[row][col])
-        solutions.append(solution)
+        try:
+            # Check which mathematical operation should be performed (last row of each
+            # column, either addition or multiplication)
+            if math_probs[-1][col] == '+':
+                solution = 0 # for addition prime solution as 0
+                # Iterate over all rows except last (with the operator + or *)
+                for row in range(len(math_probs) - 1):
+                    solution += int(math_probs[row][col])
+            else:
+                solution=1 # for multiplication, prime solution as 1
+                # Iterate over all rows except last (with the operator + or *)
+                for row in range(len(math_probs) - 1):
+                    solution *= int(math_probs[row][col])
+            solutions.append(solution)
+        except (ValueError, IndexError) as e: # Handle errors in case of malformed input csv
+            print(f"Error in column {col}: {e}")
+            solutions.append(None)
     return(solutions)
+    # Alternative solution using list comprehension
+    # from math import prod
+    # return [
+    #     sum(int(math_probs[row][col]) for row in range(len(math_probs) - 1))
+    #     if math_probs[-1][col] == '+' else
+    #     prod(int(math_probs[row][col]) for row in range(len(math_probs) - 1))
+    #     for col in range(len(math_probs[0]))
+    # ]
 
 
 math_probs = read_math_problems()
