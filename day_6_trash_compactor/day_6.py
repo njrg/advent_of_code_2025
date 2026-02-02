@@ -2,14 +2,10 @@ import csv
 import pandas as pd
 
 def read_math_problems():
-    #df = pd.read_csv('input.tst', sep='\\s+', header=None, engine='python', dtype='object') # sep='\s+' > one ore more white space characters
-    df = pd.read_csv('input', sep='\\s+', header=None, engine='python', dtype='object') # sep='\s+' > one ore more white space characters
-    print(df.head())
-    #with open('input.tst', newline='') as file:
     with open('input', newline='') as file:
         reader = csv.reader(file, skipinitialspace=True, quoting=csv.QUOTE_NONE, delimiter=' ')
         data = [[x for x in row if x != ''] for row in reader if row]  # `filter out empty fields (if x != '') and empty lines (if row)
-    return(data)
+    return data
 
 def solve_math_problems(math_probs):
     solutions=[]
@@ -36,7 +32,7 @@ def solve_math_problems(math_probs):
         except (ValueError, IndexError) as e: # Handle errors in case of malformed input csv
             print(f"Error in column {col}: {e}")
             solutions.append(None)
-    return(solutions)
+    return solutions
     # Alternative solution using list comprehension
     # from math import prod
     # return [
@@ -46,9 +42,29 @@ def solve_math_problems(math_probs):
     #     for col in range(len(math_probs[0]))
     # ]
 
+def read_math_problems_pandas():
+    df = pd.read_csv('input', sep='\\s+', header=None, engine='python')
+    return df
+
+def solve_math_problems_pandas(df):
+    operators = df.iloc[-1] # Last row contains operators
+    values = df.iloc[:-1] # All rows except the last contain values
+    solutions = []
+    for col in values.columns:
+        if operators[col] == '+':
+            solutions.append(values[col].astype(int).sum())
+        else:
+            solutions.append(values[col].astype(int).prod())
+    return solutions
+
+
 
 math_probs = read_math_problems()
-
 solutions = solve_math_problems(math_probs)
+grand_total = sum(solutions)
+print(grand_total)
+
+df = read_math_problems_pandas()
+solutions = solve_math_problems_pandas(df)
 grand_total = sum(solutions)
 print(grand_total)
