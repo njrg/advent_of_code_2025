@@ -15,33 +15,33 @@
 My attempt at solving [Advent of Code 2025](https://adventofcode.com/2025) using Python.
 
 
-## **About**
+## About
 
 - **Purpose**: Learning Python and programming through fun, challenging puzzles.
 - **Status**: Not finished in time, but I revisit it occasionally to solve more puzzles when I find spare time.
 - **License**: [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html) (see [LICENSE](LICENSE) for details).
 
 
-## **Structure**
+## Structure
 
-- Each day’s puzzle is in its own directory (e.g., `day01`, `day02`).
-- Solutions are written in Python, with a focus on clarity and learning.
+- Each day’s puzzle is in its own directory (e.g., `day_1_secret_entrance`, …).
+- Solutions are written in Python, with a focus on clarity (well) and learning … and commenting.
 - Input files are included where applicable.
 
 
-## **Dependencies**
+## Dependencies
 
 - Python 3.14+
 - [pandas](https://pandas.pydata.org/) (for data manipulation)
 - [pytest](https://docs.pytest.org/) (for testing)
 
 
-## **Notes**
+## Notes
 
 - This is a personal learning project. Feedback and suggestions are welcome!
 - Pull requests for improvements or alternative solutions are appreciated.
 
 
-## **License**
+## License
 
 This project is licensed under the **GPL-3.0-or-later**. See the LICENSE file for details.
