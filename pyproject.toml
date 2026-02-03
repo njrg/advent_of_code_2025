@@ -1,10 +1,23 @@
 [project]
 name = "advent-of-code-2025"
 version = "0.1.0"
-description = "Add your description here"
+description = "My attempt at Advent of Code 2025, written in Python, mostly for fun and personal learning purposes."
 readme = "README.md"
 requires-python = ">=3.14"
+authors = [
+    { name = "Nico Raag", email = "n.raag@proton.me" }
+]
+license = { text = "GPL-3.0-or-later" }
+classifiers = [
+    "Programming Language :: Python :: 3.14",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Intended Audience :: Developers",
+    "Topic :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+urls = { repository = "https://github.com/njrg/advent-of-code-2025" }
+
 dependencies = [
-    "pandas>=3.0.0",
+    "pandas>=3.0.0,<3.1.0",
     "pytest>=9.0.2",
 ]
