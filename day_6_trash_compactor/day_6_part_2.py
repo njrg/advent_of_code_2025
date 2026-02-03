@@ -2,7 +2,7 @@ import re
 from math import prod
 
 def read_math_problems():
-    with open('input.tst','r') as file:
+    with open('input','r') as file:
         lines = file.readlines()
     
     # Use the last line to determine column positions
@@ -97,10 +97,8 @@ def solve_math_problems(math_probs):
 
 
 math_probs = read_math_problems()
-print(math_probs)
 
 solutions = solve_math_problems(math_probs)
-print(solutions)
 grand_total = sum(solutions)
 print(grand_total)
 
