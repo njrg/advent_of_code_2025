@@ -39,6 +39,10 @@ def read_math_problems():
             row.append(field)
         data.append(row)
 
+    # Clean up the row containing the operators (strip white spaces):
+    data[-1] = [s.strip() for s in data[-1]]
+
+
     # data is now structured like so:
     # data[row][col], i.e. it is a list of lists, the lists being the rows of the
     # csv-file, each entry in each row represents a column. Numbers in each column
