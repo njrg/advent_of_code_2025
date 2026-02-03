@@ -67,8 +67,8 @@ def read_math_problems():
             numbers = [int(number) for number in numbers]
         math_probs.append(numbers)
 
-    # Add operators to math_probs:
-    math_probs.append(data[-1])
+    # Add operators to math_probs, read from right to left:
+    math_probs.append(data[-1][::-1])
     return(math_probs)
 
 
@@ -95,9 +95,10 @@ def solve_math_problems(math_probs):
 math_probs = read_math_problems()
 print(math_probs)
 
-#solutions = solve_math_problems(math_probs)
-#grand_total = sum(solutions)
-#print(grand_total)
+solutions = solve_math_problems(math_probs)
+print(solutions)
+grand_total = sum(solutions)
+print(grand_total)
 
 
 # Tests
