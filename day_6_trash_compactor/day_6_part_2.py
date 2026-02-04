@@ -106,18 +106,24 @@ print(grand_total)
 # Tests
 def test_read_math_problems():
     math_problems = read_math_problems()
-    assert type(math_problems) == list, "The math problems should be retuned as a list"
+    #assert type(math_problems) == list, "The math problems should be retuned as a list"
+    assert isinstance(math_problems, list), "The math problems should be retuned as a list"
     for i in range(len(math_problems) - 1):
-        for num in range(len(math_problems[i])):
-            assert type(math_problems[i][num]) == int, "The numbers should be integers"
+        assert all(isinstance(num, int) for num in math_problems[i]), "All numbers should be integers"
+        #for num in range(len(math_problems[i])):
+        #    assert type(math_problems[i][num]) == int, "The numbers should be integers"
 
-    for operator in range(len(math_problems[-1])):
-        assert type(math_problems[-1][operator]) == str, "The orators should be strings"
+    assert all(isinstance(op, str) for op in math_problems[-1]), "All operators should be strings"
+    #for operator in range(len(math_problems[-1])):
+    #    assert type(math_problems[-1][operator]) == str, "The orators should be strings"
 
     assert len(math_problems[-1]) == len(math_problems) - 1, "The number of operators should match the number of problems"
 
 def test_solve_math_problems():
-    solutions = solve_math_problems(read_math_problems())
-    assert type(solutions) == list, "Solutions should be returned as a list"
-    for solution in solutions:
-        assert type(solution) == int, "Solutions should be integers"
+    test_problems = [
+            [10, 20, 30], # Example math problem 1
+            [5, 10, 15],  # Example math problem 2
+            ['+', '*']    # operators
+        ]
+    solutions = solve_math_problems(test_problems)
+    assert solutions == [60, 750], "The solutions should match expected results"
