@@ -10,8 +10,8 @@ def read_math_problems():
     operator_positions = [match.start() for match in re.finditer(r'\S', last_line)]
     # re.finditer: searches the string (last_line) for all occurrences of the regex
     # pattern (\S = non-whitespace character) and returns an iterator of Match objects.
-    # The r prefix deonotes a ras string, which means backslashes are treated as
-    # literarl characters, not escpae characters → \S is treated as the regex pattern
+    # The r prefix denotes a raw string, which means backslashes are treated as
+    # literal characters, not escpae characters → \S is treated as the regex pattern
     # \S not as an escaped S.
     # match.start(): For each Match object returned by re.finditer, match.start()
     # gives the starting index (position) of the matched substring in the original
@@ -68,7 +68,7 @@ def read_math_problems():
                 digits.append(data[row][col][digit])
             numbers.append(''.join(digits))
             # convert numbers to integers
-            numbers = [int(number) for number in numbers]
+        numbers = [int(number) for number in numbers]
         math_probs.append(numbers)
 
     # Add operators to math_probs, read from right to left:
